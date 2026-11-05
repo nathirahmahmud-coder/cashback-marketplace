@@ -338,7 +338,6 @@ function MerchantScreen({ cashbackName, merchant, onBack, onTerms }: { cashbackN
       <ScreenHeader title={merchant.name} onBack={onBack} />
       <figure className="merchant-banner">
         <Image src={merchant.bannerPath} alt={merchant.bannerAlt} fill sizes="(max-width: 480px) 100vw, 384px" />
-        <figcaption>Illustrative category photography · not an official merchant campaign</figcaption>
       </figure>
       <section className="merchant-profile">
         <div className="merchant-profile-logo"><BrandLogo merchant={merchant} /></div>
@@ -375,7 +374,7 @@ function LedgerScreen({ cashbackName, filter, setFilter, onBack, onBrowse, onSel
       <div className="ledger-filters" role="tablist" aria-label={`${cashbackName} status`}>
         {filters.map((item) => <button key={item} role="tab" aria-selected={filter === item} className={`status-filter status-filter-${item.toLowerCase()} ${filter === item ? 'active' : ''}`} onClick={() => setFilter(item)}>{item}</button>)}
       </div>
-      <section className="summary-card"><div><span>Pending {cashbackName}</span><strong>{formatRM(pendingCashback)}</strong><small>Estimated, awaiting merchant approval.</small></div><div><span>Approved {cashbackName}</span><strong>{formatRM(approvedCashback)}</strong><small>Merchant-approved; wallet credit is separate.</small></div></section>
+      <section className="summary-card"><div><span>Pending {cashbackName}</span><strong>{formatRM(pendingCashback)}</strong><small>Estimated, awaiting merchant approval.</small></div><div><span>Approved {cashbackName}</span><strong>{formatRM(approvedCashback)}</strong><small>It&apos;ll be added to your wallet once it&apos;s ready for payout.</small></div></section>
       <div className="section-heading ledger-list-heading"><h2>Transaction History</h2></div>
       <div className="transaction-list">
         {visible.map((transaction) => {
@@ -414,7 +413,7 @@ function TransactionScreen({ cashbackName, transaction, merchant, onBack, onTerm
 
   const statusInformation = {
     Pending: { heading: 'Cashback pending', description: 'Your cashback is being reviewed.' },
-    Approved: { heading: 'Cashback approved', description: 'Your cashback has been approved. This does not mean it has been credited to your wallet.' },
+    Approved: { heading: 'Cashback approved', description: "Your cashback has been approved! It'll be added to your wallet once it's ready for payout." },
     Rejected: { heading: 'Cashback rejected', description: 'This transaction is not eligible for cashback.' },
   }[transaction.status]
 
@@ -442,7 +441,7 @@ function TermsScreen({ cashbackName, merchant, onBack, onReturn, returnLabel }: 
     { title: 'Eligible purchases', icon: ShoppingBag, lines: [`Shop Now opens the merchant’s website. Cashback is available only for purchases recorded through an eligible offer.`, `Rates and eligibility depend on the merchant’s current terms.`, `Eligibility may vary by purchase category.`] },
     { title: 'Exclusions', icon: FileText, lines: [`Cancelled, refunded or otherwise ineligible purchases may not qualify for ${feature}.`, 'Using promotional codes that are not approved under an offer may affect eligibility.', `Purchases that are not tracked may not qualify for ${feature}.`, 'Additional merchant-specific exclusions may apply.', ...merchant.terms] },
     { title: `How to qualify for ${feature}`, icon: ArrowLeftRight, lines: [`Start from an eligible Cashback Deals offer and complete your purchase under the merchant’s terms.`, 'Avoid switching between promotional links during checkout, as this may affect tracking.', 'Only purchases confirmed by the merchant qualify.'] },
-    { title: `${cashbackName} approval`, icon: Clock3, lines: [`Pending amounts are estimates until a merchant review is complete.`, `Approved means the merchant has approved the amount; it does not mean the cashback has been credited to your wallet.`, `The final ${feature} amount may change following review.`, 'Wallet crediting is handled separately under the applicable wallet terms.'] },
+    { title: `${cashbackName} approval`, icon: Clock3, lines: [`Pending amounts are estimates until a merchant review is complete.`, "Your cashback has been approved! It'll be added to your wallet once it's ready for payout.", `The final ${feature} amount may change following review.`, 'Wallet crediting is handled separately under the applicable wallet terms.'] },
     { title: `Missing or rejected ${feature}`, icon: CircleHelp, lines: [`Contact Customer Support with your order details and proof of purchase.`, 'Claim windows and eligibility depend on merchant terms.', `${cashbackName} claims are subject to the merchant’s eligibility rules and review outcome.`, 'Submitting proof of purchase does not guarantee approval.', `Rejected ${feature} is not eligible for payment unless the merchant approves an adjustment.`] },
   ]
   return (

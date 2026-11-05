@@ -56,7 +56,7 @@ export const MERCHANTS: Merchant[] = [
     detailRoute: 'merchant', affiliateUrl: null, officialWebsite: 'https://www.lazada.com.my',
     terms: ['Only eligible orders placed through the tracked offer path may qualify.', 'Cancelled orders, returned items and excluded products may not earn cashback.'],
     about: 'Explore Lazada’s online marketplace for everyday essentials, new discoveries and more. Earn cashback on eligible orders; product exclusions and offer terms apply.',
-    logoPath: null, bannerPath: '/merchants/banners/lazada.png', bannerAlt: 'Unbranded lifestyle products and a delivery box in a bright home setting.',
+    logoPath: '/merchants/logos/lazada.png', logoIncludesWordmark: true, bannerPath: '/merchants/banners/lazada.png', bannerAlt: 'Unbranded lifestyle products and a delivery box in a bright home setting.',
   },
   {
     id: 'shopee', name: 'Shopee', description: 'Online Shopping', categories: ['Online Shopping'],
