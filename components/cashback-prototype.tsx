@@ -246,18 +246,6 @@ function CashbackPrototype() {
 }
 
 function HomeScreen({ branding, customerName, onOpenDeals, onToast }: { branding: BrandSettings; customerName: string; onOpenDeals: () => void; onToast: () => void }) {
-  const [greeting, setGreeting] = useState('Good morning')
-
-  useEffect(() => {
-    const updateGreeting = () => {
-      const hour = new Date().getHours()
-      setGreeting(hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening')
-    }
-    updateGreeting()
-    const interval = window.setInterval(updateGreeting, 60_000)
-    return () => window.clearInterval(interval)
-  }, [])
-
   const quickActions = [
     { label: 'Scan', icon: QrCode }, { label: 'Pay', icon: CreditCard }, { label: 'Transfer', icon: ArrowLeftRight }, { label: 'Bills', icon: ReceiptText },
     { label: 'Top Up', icon: ArrowDownUp }, { label: 'Parking', icon: Clock3 }, { label: 'Insurance', icon: ShieldCheck },
@@ -275,7 +263,7 @@ function HomeScreen({ branding, customerName, onOpenDeals, onToast }: { branding
           <button className="profile-button" aria-label={`Profile for ${customerName}`} onClick={onToast}><UserRound size={26} /></button>
         </div>
       </div>
-      <div className="home-greeting-copy"><p className="eyebrow-muted">{greeting},</p><p className="user-greeting">{customerName}!</p></div>
+      <div className="home-greeting-copy"><p className="eyebrow-muted">Good morning,</p><p className="user-greeting">{customerName}!</p></div>
 
       <section className="balance-banner" aria-label="Demo wallet balance RM 568.00">
         <div><span className="balance-label">Demo wallet balance</span><strong>RM 568.00 <Eye size={19} /></strong></div>
