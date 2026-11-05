@@ -80,6 +80,6 @@ export const MERCHANTS: Merchant[] = [
     detailRoute: 'merchant', affiliateUrl: null, officialWebsite: 'https://www.uniqlo.com/my',
     terms: ['Eligible purchases must follow the merchant-specific offer conditions.', 'Cancelled, refunded or excluded purchases may not qualify.'],
     about: 'Discover UNIQLO LifeWear: thoughtfully designed clothing made for comfort, quality and everyday versatility. Earn cashback on eligible purchases; exclusions and offer terms apply.',
-    logoPath: '/merchants/logos/uniqlo.svg', bannerPath: '/merchants/banners/uniqlo.png', bannerAlt: 'Folded neutral casual clothing with a muted red accent.',
+    logoPath: '/merchants/logos/uniqlo.svg', logoIncludesWordmark: true, bannerPath: '/merchants/banners/uniqlo.png', bannerAlt: 'Folded neutral casual clothing with a muted red accent.',
   },
 ]

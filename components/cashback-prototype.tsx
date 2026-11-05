@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
-import DemoSettings, { BRAND_SETTINGS_STORAGE_KEY, DEFAULT_BRAND_SETTINGS, DEMO_CUSTOMERS, getPresetBrandSettings, isPresetThemeId, readBrandSettings, THEME_PRESETS, type BrandSettings } from '@/components/demo-settings'
+import DemoSettings, { BRAND_SETTINGS_STORAGE_KEY, DEFAULT_BRAND_SETTINGS, DEMO_CUSTOMERS, getPresetBrandSettings, isPresetThemeId, LEGACY_BRAND_SETTINGS_STORAGE_KEY, readBrandSettings, THEME_PRESETS, type BrandSettings } from '@/components/demo-settings'
 import { MERCHANTS as merchants, type Merchant, type MerchantEventRate } from '@/components/merchant-data'
 import {
   ArrowDownUp,
@@ -38,6 +38,7 @@ type CashbackStatus = 'Pending' | 'Approved' | 'Rejected'
 
 const DEFAULT_CUSTOMER_ALLOCATION = 70
 const PLATFORM_COMMISSION_SHARE = 70
+const WALLET_BALANCE = 856.4
 
 type Transaction = {
   id: string
@@ -136,6 +137,7 @@ function CashbackPrototype() {
 
     try {
       savedBranding = readBrandSettings(window.localStorage.getItem(BRAND_SETTINGS_STORAGE_KEY))
+      window.localStorage.removeItem(LEGACY_BRAND_SETTINGS_STORAGE_KEY)
       setStorageAvailable(true)
     } catch {
       setStorageAvailable(false)
@@ -251,27 +253,28 @@ function HomeScreen({ branding, customerName, onOpenDeals, onToast }: { branding
     { label: 'Top Up', icon: ArrowDownUp }, { label: 'Parking', icon: Clock3 }, { label: 'Insurance', icon: ShieldCheck },
   ]
   const featured = merchants.slice(0, 3)
+  const partnerName = branding.partnerName.trim()
   return (
     <div className="screen-content home-content">
-      <div className="home-greeting-row">
-        <div className="partner-lockup">
-          {branding.logoDataUrl ? <img className="partner-logo-image" src={branding.logoDataUrl} alt={`${branding.partnerName} logo`} /> : <span className="partner-logo-fallback" aria-hidden="true">{branding.partnerName.trim().slice(0, 2).toUpperCase() || 'P'}</span>}
-          <span className="partner-lockup-copy"><strong>{branding.partnerName || 'Partner wallet'}</strong><small>Digital wallet</small></span>
-        </div>
+      <div className={`home-greeting-row${branding.logoDataUrl || partnerName ? '' : ' home-greeting-row-unbranded'}`}>
+        {(branding.logoDataUrl || partnerName) && <div className="partner-lockup">
+          {branding.logoDataUrl && <img className="partner-logo-image" src={branding.logoDataUrl} alt={`${partnerName || 'Partner'} logo`} />}
+          {partnerName && <span className="partner-lockup-copy"><strong>{partnerName}</strong><small>Digital wallet</small></span>}
+        </div>}
         <div className="home-profile-actions">
-          <button className="notification-button" aria-label="3 sample notifications" onClick={onToast}><Bell size={23} /><span>3</span></button>
+          <button className="notification-button" aria-label="Notifications" onClick={onToast}><Bell size={23} /><span>3</span></button>
           <button className="profile-button" aria-label={`Profile for ${customerName}`} onClick={onToast}><UserRound size={26} /></button>
         </div>
       </div>
-      <div className="home-greeting-copy"><p className="eyebrow-muted">Good morning,</p><p className="user-greeting">{customerName}!</p></div>
+      <div className="home-greeting-copy"><p className="user-greeting">{`Good morning, ${customerName}!`}</p></div>
 
-      <section className="balance-banner" aria-label="Demo wallet balance RM 568.00">
-        <div><span className="balance-label">Demo wallet balance</span><strong>RM 568.00 <Eye size={19} /></strong></div>
+      <section className="balance-banner" aria-label={`Available Balance ${formatRM(WALLET_BALANCE)}`}>
+        <div><span className="balance-label">Available Balance</span><strong>{formatRM(WALLET_BALANCE)} <Eye size={19} /></strong></div>
         <button className="button-primary balance-add" onClick={onToast}><span>+</span> Add money</button>
       </section>
 
       <button className="home-campaign" onClick={onOpenDeals} aria-label={`Explore ${branding.cashbackName} deals`}>
-        <div className="campaign-copy"><span className="campaign-kicker">{branding.cashbackName} · PARTNER OFFERS</span><strong>Shop online.<br />Get more back.</strong><p>Discover offers from favourite brands and earn on eligible purchases.</p><span className="campaign-button">Explore deals <ChevronRight size={16} /></span></div>
+        <div className="campaign-copy"><span className="campaign-kicker">{branding.cashbackName} Deals · PARTNER OFFERS</span><strong>Shop online.<br />Get more back.</strong><p>Discover offers from favourite brands and earn on eligible purchases.</p><span className="campaign-button">Explore deals <ChevronRight size={16} /></span></div>
         <div className="campaign-photo" role="img" aria-label="Suitcase, sun hat and sunglasses ready for a trip"><Image src="/images/cashback-travel.png" alt="" fill sizes="(max-width: 480px) 58vw, 240px" priority /></div>
       </button>
 
@@ -347,11 +350,11 @@ function MerchantScreen({ cashbackName, merchant, onBack, onTerms }: { cashbackN
         {merchant.eventRates.map((eventRate) => <div className="rate-line" key={eventRate.category}><span>{eventRate.category}</span><strong>Up to {formatRate(effectiveEventRate(eventRate))}%</strong></div>)}
       </section>
       <section className="steps-section"><h3>How to earn {cashbackName.toLowerCase()}</h3>
-        <Step number="1" title="Select Shop Now" description="Opens the merchant’s public website. Affiliate tracking is not active in this presentation demo." />
+        <Step number="1" title="Select Shop Now" description="Opens the merchant’s website. Cashback depends on eligible purchases and successful tracking under the offer terms." />
         <Step number="2" title={`Complete your ${purchase}`} description={`Complete an eligible ${purchase} and follow the merchant’s offer terms.`} />
         <Step number="3" title={`Check your ${cashbackName}`} description={`Visit My ${cashbackName} to review your ${purchase} and its status.`} />
       </section>
-      <div className="trip-sticky-cta"><a className="button-primary shop-now-button" href={shopUrl} target="_blank" rel="noopener noreferrer">Shop Now <ExternalLink size={17} /></a><p className="prototype-disclosure">Demo link opens the public merchant website. No cashback tracking or approval is triggered.</p></div>
+      <div className="trip-sticky-cta"><a className="button-primary shop-now-button" href={shopUrl} target="_blank" rel="noopener noreferrer">Shop Now <ExternalLink size={17} /></a><p className="cashback-disclosure">This link opens the merchant’s website; cashback depends on eligible transaction tracking and merchant terms.</p></div>
       <button className="list-link" onClick={onTerms}><FileText size={20} /><span>View terms &amp; conditions</span><ChevronRight size={19} /></button>
     </div>
   )
@@ -370,11 +373,10 @@ function LedgerScreen({ cashbackName, filter, setFilter, onBack, onBrowse, onSel
     <div className="screen-content ledger-content">
       <ScreenHeader title={`My ${cashbackName}`} onBack={onBack} right={<button className="icon-button" aria-label="Filter transactions" onClick={() => setFilter(filter === 'All' ? 'Pending' : 'All')}><Filter size={19} /></button>} />
       <div className="ledger-filters" role="tablist" aria-label={`${cashbackName} status`}>
-        {filters.map((item) => <button key={item} role="tab" aria-selected={filter === item} className={filter === item ? 'active' : ''} onClick={() => setFilter(item)}>{item}</button>)}
+        {filters.map((item) => <button key={item} role="tab" aria-selected={filter === item} className={`status-filter status-filter-${item.toLowerCase()} ${filter === item ? 'active' : ''}`} onClick={() => setFilter(item)}>{item}</button>)}
       </div>
       <section className="summary-card"><div><span>Pending {cashbackName}</span><strong>{formatRM(pendingCashback)}</strong><small>Estimated, awaiting merchant approval.</small></div><div><span>Approved {cashbackName}</span><strong>{formatRM(approvedCashback)}</strong><small>Merchant-approved; wallet credit is separate.</small></div></section>
-      <p className="demo-data-note">Sample transaction history for presentation only. Statuses are not live.</p>
-      <div className="section-heading ledger-list-heading"><h2>Transaction history</h2></div>
+      <div className="section-heading ledger-list-heading"><h2>Transaction History</h2></div>
       <div className="transaction-list">
         {visible.map((transaction) => {
           const merchant = merchantFor(transaction.merchant)
@@ -411,19 +413,19 @@ function TransactionScreen({ cashbackName, transaction, merchant, onBack, onTerm
   }
 
   const statusInformation = {
-    Pending: { heading: `${cashbackName} pending`, description: `Your purchase has been recorded. ${cashbackName} is awaiting the merchant’s approval. The estimated amount may change.` },
-    Approved: { heading: `${cashbackName} approved`, description: `The merchant has approved this ${cashbackName.toLowerCase()} amount. Approval is not wallet credit; crediting is handled separately.` },
-    Rejected: { heading: `${cashbackName} not approved`, description: `This purchase was not approved for ${cashbackName.toLowerCase()}. Please refer to the merchant’s terms and conditions or contact Customer Support if you need assistance.` },
+    Pending: { heading: 'Cashback pending', description: 'Your cashback is being reviewed.' },
+    Approved: { heading: 'Cashback approved', description: 'Your cashback has been approved. This does not mean it has been credited to your wallet.' },
+    Rejected: { heading: 'Cashback rejected', description: 'This transaction is not eligible for cashback.' },
   }[transaction.status]
 
   return (
     <div className="screen-content transaction-content">
-      <ScreenHeader title="Transaction details" onBack={onBack} />
+      <ScreenHeader title="Transaction Details" onBack={onBack} />
       <section className="transaction-merchant-card"><div className="transaction-merchant-logo"><BrandLogo merchant={merchant} /></div><div className="transaction-merchant-name"><strong>{merchant.name}</strong><span>{merchant.description}</span></div><span className={`status-pill ${statusMeta[transaction.status].className}`}>{transaction.status}</span></section>
-      <DataSection title="Order information" rows={orderRows} />
+      <DataSection title="Order Information" rows={orderRows} />
       <DataSection title={`${cashbackName} details`} rows={cashbackRows} />
-      <DataSection title="Transaction status" rows={[["Status", transaction.status, transaction.status.toLowerCase()], ["Last updated", transaction.statusUpdatedAt]]} />
-      <section className="transaction-status-note"><h2>{statusInformation.heading}</h2><p>{statusInformation.description}</p></section>
+      <DataSection title="Transaction Status" rows={[["Status", transaction.status, `status-${transaction.status.toLowerCase()}`], ["Last updated", transaction.statusUpdatedAt]]} />
+      <section className="transaction-status-note" data-status={transaction.status.toLowerCase()}><h2>{statusInformation.heading}</h2><p>{statusInformation.description}</p></section>
       <div className="detail-links"><button onClick={onTerms}><FileText size={21} /><span>View terms &amp; conditions</span><ChevronRight size={18} /></button></div>
       <section className="support-card"><CircleHelp size={22} /><div><h2>Need help with this purchase?</h2><p>If your {cashbackName.toLowerCase()} is missing or incorrect, contact Customer Support with your order number and proof of purchase.</p><p>Missing cashback claims should normally be submitted within 30 days of purchase, unless the merchant’s terms specify otherwise. For travel bookings, the applicable claim period may depend on completion of your stay, flight or activity.</p></div></section>
     </div>
@@ -431,23 +433,22 @@ function TransactionScreen({ cashbackName, transaction, merchant, onBack, onTerm
 }
 
 function DataSection({ title, rows }: { title: string; rows: string[][] }) {
-  return <section className="data-section"><h2>{title}</h2><div className="data-card">{rows.map(([label, value, tone]) => <div className="data-row" key={label}><span>{label}</span><strong className={tone}>{value}</strong></div>)}</div></section>
+  return <section className="data-section"><h2>{title}</h2><div className="data-card">{rows.map(([label, value, tone]) => <div className="data-row" key={label}><span>{label}</span><strong className={tone?.startsWith('status-') ? `status-pill ${tone}` : tone}>{value}</strong></div>)}</div></section>
 }
 
 function TermsScreen({ cashbackName, merchant, onBack, onReturn, returnLabel }: { cashbackName: string; merchant: Merchant; onBack: () => void; onReturn: () => void; returnLabel: string }) {
   const feature = cashbackName.toLowerCase()
   const topics = [
-    { title: 'Eligible purchases', icon: ShoppingBag, lines: [`Select Shop Now to open the merchant’s public website. Tracking is not active in this presentation demo.`, `${cashbackName} eligibility and rates depend on the merchant’s actual terms and are not verified by this demo.`, `Eligibility may vary by purchase category.`] },
+    { title: 'Eligible purchases', icon: ShoppingBag, lines: [`Shop Now opens the merchant’s website. Cashback is available only for purchases recorded through an eligible offer.`, `Rates and eligibility depend on the merchant’s current terms.`, `Eligibility may vary by purchase category.`] },
     { title: 'Exclusions', icon: FileText, lines: [`Cancelled, refunded or otherwise ineligible purchases may not qualify for ${feature}.`, 'Using promotional codes that are not approved under an offer may affect eligibility.', `Purchases that are not tracked may not qualify for ${feature}.`, 'Additional merchant-specific exclusions may apply.', ...merchant.terms] },
-    { title: `How to qualify for ${feature}`, icon: ArrowLeftRight, lines: [`In a live offer, start your purchase through the participating wallet’s tracked merchant link. This demo opens the merchant’s public website without tracking.`, 'Complete your purchase in accordance with the merchant’s terms and conditions.', 'Avoid switching between different promotional links during checkout, as this may affect tracking.'] },
-    { title: `${cashbackName} approval`, icon: Clock3, lines: [`Pending amounts are estimates until a merchant review is complete.`, `Approved is a sample merchant status in this presentation; it does not mean the amount has been credited to the wallet.`, `A merchant’s actual approval may change the final ${feature} amount.`, 'Wallet crediting is handled separately in accordance with applicable wallet terms.'] },
-    { title: `Missing or rejected ${feature}`, icon: CircleHelp, lines: [`For a live offer, contact Customer Support with your order details and proof of purchase.`, 'Missing-purchase claim windows depend on merchant terms.', `${cashbackName} claims are subject to the merchant’s eligibility rules and investigation outcome.`, 'Submitting proof of purchase does not guarantee approval.', `Rejected ${feature} will not be paid unless the merchant subsequently approves an adjustment.`] },
+    { title: `How to qualify for ${feature}`, icon: ArrowLeftRight, lines: [`Start from an eligible Cashback Deals offer and complete your purchase under the merchant’s terms.`, 'Avoid switching between promotional links during checkout, as this may affect tracking.', 'Only purchases confirmed by the merchant qualify.'] },
+    { title: `${cashbackName} approval`, icon: Clock3, lines: [`Pending amounts are estimates until a merchant review is complete.`, `Approved means the merchant has approved the amount; it does not mean the cashback has been credited to your wallet.`, `The final ${feature} amount may change following review.`, 'Wallet crediting is handled separately under the applicable wallet terms.'] },
+    { title: `Missing or rejected ${feature}`, icon: CircleHelp, lines: [`Contact Customer Support with your order details and proof of purchase.`, 'Claim windows and eligibility depend on merchant terms.', `${cashbackName} claims are subject to the merchant’s eligibility rules and review outcome.`, 'Submitting proof of purchase does not guarantee approval.', `Rejected ${feature} is not eligible for payment unless the merchant approves an adjustment.`] },
   ]
   return (
     <div className="screen-content terms-content">
       <ScreenHeader title={`${cashbackName} Terms & Conditions`} onBack={onBack} />
       <div className="terms-brand-banner"><div><BrandLogo merchant={merchant} /><span>{merchant.description}</span></div></div>
-      <p className="demo-data-note">Illustrative offer terms only. Merchant tracking and approvals are not connected.</p>
       <div className="terms-topic-list">{topics.map(({ title, icon: Icon, lines }, index) => <section className="terms-topic" key={title}>
         <div className="terms-topic-symbol"><span>{index + 1}</span><div><Icon size={25} /></div></div>
         <div className="terms-topic-copy"><h2>{title}</h2><ul>{lines.map((line, lineIndex) => <li key={`${title}-${lineIndex}`}>{line}</li>)}</ul></div>

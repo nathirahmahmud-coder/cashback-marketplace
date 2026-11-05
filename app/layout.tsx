@@ -2,10 +2,9 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Cashback Marketplace | Partner Demo',
-  description: 'A white-label cashback shopping marketplace prototype for digital wallet and fintech partner presentations.',
-  applicationName: 'White-Label Cashback Marketplace',
-  icons: { icon: '/icon.svg' },
+  title: 'Cashback Marketplace',
+  description: 'Explore participating merchants, compare cashback rates and review eligible purchases.',
+  applicationName: 'Cashback Marketplace',
 }
 
 export const viewport: Viewport = {

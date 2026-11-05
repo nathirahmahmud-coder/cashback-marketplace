@@ -172,48 +172,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .featured-card > strong, .featured-card > span:last-child { position: relative; z-index: 1; }
 .featured-card > strong { font-size: 16px; margin-top: auto; }
 .featured-card > span:last-child { font-size: 11px; color: #d7dbe6; }
-.brand-logo { display: flex; align-items: center; justify-content: center; gap: 5px; min-width: 0; white-space: nowrap; }
-.brand-wordmark { color: #1b2131; font-size: 13px; font-weight: 750; letter-spacing: -.04em; }
-.wordmark-tripdotcom { color: #2875f0; font-size: 17px; font-weight: 800; letter-spacing: -.06em; }
-.trip-period { color: #ffbb00; }
-.brand-logo-agoda { flex-direction: column; gap: 1px; }
-.wordmark-agoda { color: #686868; letter-spacing: .01em; font-weight: 550; font-size: 17px; }
-.agoda-dots { display: flex; gap: 3px; }
-.agoda-dots i { width: 6px; height: 6px; border-radius: 50%; background: #e51c31; }
-.agoda-dots i:nth-child(2) { background: #f6b600; }
-.agoda-dots i:nth-child(3) { background: #20b76a; }
-.agoda-dots i:nth-child(4) { background: #129fce; }
-.agoda-dots i:nth-child(5) { background: #6140c8; }
-.klook-mark { width: 19px; height: 19px; position: relative; display: inline-block; flex: 0 0 auto; border-radius: 50%; background: conic-gradient(#ffba00 0 24%, #fb532c 24% 47%, #fc25a2 47% 70%, #20c5dc 70% 83%, #ffba00 83%); }
-.klook-mark i { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: white; top: 7px; left: 7px; }
-.wordmark-klook { color: #f46332; font-size: 16px; letter-spacing: -.06em; }
-.wordmark-zalora { color: #131313; letter-spacing: .18em; font-size: 11px; font-weight: 500; }
-.lazada-mark { position: relative; width: 21px; height: 21px; transform: rotate(45deg) scale(.78); background: linear-gradient(135deg,#ff2e88 0 48%,#8d27e6 49%); flex: 0 0 auto; }
-.lazada-mark i { position: absolute; inset: 4px; background: linear-gradient(135deg,#ffac00,#f64660); clip-path: polygon(50% 0,100% 50%,50% 100%,0 50%); }
-.wordmark-lazada { color: #2867e8; font-size: 15px; letter-spacing: -.06em; }
-.shopee-mark { position: relative; display: inline-flex; color: #ee4d2d; align-items: center; justify-content: center; flex: 0 0 auto; }
-.shopee-mark b { position: absolute; top: 3px; left: 7px; color: white; font-size: 9px; font-weight: 600; }
-.wordmark-shopee { color: #ee4d2d; font-size: 14px; }
-.adidas-mark { display: flex; align-items: flex-end; gap: 2px; width: 20px; height: 18px; transform: skewY(-24deg); flex: 0 0 auto; }
-.adidas-mark i { display: block; width: 5px; background: #111; }
-.adidas-mark i:nth-child(1) { height: 8px; }
-.adidas-mark i:nth-child(2) { height: 13px; }
-.adidas-mark i:nth-child(3) { height: 18px; }
-.wordmark-adidas { color: #111; font-weight: 900; font-size: 14px; }
-.uniqlo-mark { width: 29px; height: 30px; display: grid; place-content: center; color: #fff; background: #e60012; font-size: 9px; line-height: .95; font-weight: 800; letter-spacing: -.05em; text-align: center; }
-.brand-logo-compact .wordmark-tripdotcom { font-size: 11px; }
-.brand-logo-compact .wordmark-agoda { font-size: 11px; }
-.brand-logo-compact .agoda-dots i { width: 4px; height: 4px; }
-.brand-logo-compact .klook-mark { width: 15px; height: 15px; }
-.brand-logo-compact .klook-mark i { width: 4px; height: 4px; top: 5.5px; left: 5.5px; }
-.brand-logo-compact .wordmark-klook { font-size: 11px; }
-.brand-logo-compact .wordmark-zalora { font-size: 9px; }
-.brand-logo-compact .lazada-mark { width: 16px; height: 16px; }
-.brand-logo-compact .wordmark-lazada, .brand-logo-compact .wordmark-shopee, .brand-logo-compact .wordmark-adidas { font-size: 11px; }
-.brand-logo-compact .shopee-mark svg { width: 15px; height: 15px; }
-.brand-logo-compact .shopee-mark b { left: 6px; top: 3px; font-size: 7px; }
-.brand-logo-compact .adidas-mark { width: 16px; height: 14px; }
-.brand-logo-compact .uniqlo-mark { width: 23px; height: 25px; font-size: 7px; }
+.brand-logo { display: flex; min-width: 0; align-items: center; justify-content: center; gap: 7px; white-space: nowrap; }
+.brand-wordmark { min-width: 0; max-width: 100%; overflow: hidden; color: #1b2131; font-size: 12px; font-weight: 700; letter-spacing: -.04em; text-overflow: ellipsis; }
 .bottom-tabs { position: sticky; bottom: -12px; z-index: 3; display: grid; grid-template-columns: repeat(4, 1fr); background: #151518; border-top: 1px solid #2a2a30; margin: 9px -20px -12px; padding: 9px 6px max(8px, env(safe-area-inset-bottom)); }
 .bottom-tabs button { min-width: 0; display: flex; flex-direction: column; gap: 4px; align-items: center; color: #8790a5; border: 0; background: transparent; padding: 2px 0; font-size: 9px; }
 .bottom-tabs button.active { color: var(--theme-primary); }
@@ -244,11 +204,11 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .merchant-list { display: flex; flex-direction: column; gap: 6px; }
 .merchant-row { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto 13px; gap: 8px; align-items: center; width: 100%; min-height: 70px; padding: 9px 9px; border: 1px solid #f1f1f4; border-radius: 15px; background: #fff; color: #12172b; text-align: left; box-shadow: 0 3px 15px rgba(25,33,55,.035); transition: border-color .16s, transform .16s; }
 .merchant-row:hover { border-color: color-mix(in srgb, var(--theme-primary) 42%, white); transform: translateY(-1px); }
-.merchant-logo-box { width: 96px; min-height: 42px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-.merchant-logo-box .brand-logo { justify-content: center; }
-.merchant-logo-box .brand-logo img { width: 22px; height: 22px; }
-.merchant-logo-box .brand-wordmark { font-size: 12px; }
-.merchant-logo-box .wordmark-zalora { font-size: 9px; letter-spacing: .14em; }
+.merchant-logo-box { width: 96px; min-height: 48px; display: flex; justify-content: center; align-items: center; padding: 3px; border-radius: 12px; background: #fff; }
+.merchant-logo-box .brand-logo { width: 100%; justify-content: center; gap: 5px; padding: 2px 4px; }
+.merchant-logo-box .brand-logo img { width: auto; height: 28px; max-width: 46px; }
+.merchant-logo-box .brand-logo-agoda img { max-width: 76px; }
+.merchant-logo-box .brand-wordmark { max-width: 100%; font-size: 11px; }
 .merchant-info, .transaction-description { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .merchant-info strong, .transaction-description strong { overflow: hidden; text-overflow: ellipsis; font-size: 12px; line-height: 1.1; }
 .merchant-info span, .transaction-description span, .transaction-description small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #71809b; font-size: 10px; }
@@ -308,11 +268,10 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .audit-live i { width: 6px; height: 6px; border-radius: 50%; background: #22a86c; box-shadow: 0 0 0 3px #e8f7ef; }
 .transaction-list { display: flex; flex-direction: column; gap: 7px; }
 .transaction-row { width: 100%; min-height: 86px; display: grid; grid-template-columns: 58px minmax(0,1fr) auto 12px; gap: 6px; align-items: center; padding: 8px 7px; border: 1px solid #f0f1f4; border-radius: 16px; background: white; text-align: left; box-shadow: 0 3px 14px rgba(22,30,52,.035); }
-.transaction-logo { width: 58px; height: 50px; display: grid; place-items: center; border-radius: 12px; background: #fcfcfd; }
-.transaction-logo .brand-logo { justify-content: center; flex-wrap: wrap; gap: 2px; }
-.transaction-logo .brand-logo img { width: 20px; height: 20px; }
-.transaction-logo .brand-wordmark { font-size: 10px; }
-.transaction-logo .wordmark-zalora { font-size: 8px; }
+.transaction-logo { width: 58px; height: 50px; display: grid; place-items: center; border-radius: 12px; background: #fff; }
+.transaction-logo .brand-logo { width: 100%; justify-content: center; flex-wrap: wrap; gap: 2px; padding: 2px; }
+.transaction-logo .brand-logo img { width: auto; height: 18px; max-width: 25px; }
+.transaction-logo .brand-wordmark { max-width: 100%; font-size: 9px; }
 .transaction-description { gap: 4px; }
 .transaction-description strong { font-size: 12px; }
 .transaction-description span, .transaction-description small { font-size: 9px; }
@@ -320,9 +279,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .transaction-money > strong { white-space: nowrap; color: #151a2d; font-size: 12px; letter-spacing: -.035em; }
 .transaction-money > small { color: #6e7991; font-size: 8px; white-space: nowrap; }
 .status-pill { display: inline-flex; justify-content: center; align-items: center; min-height: 26px; padding: 0 9px; border-radius: 9px; white-space: nowrap; font-size: 10px; }
-.status-approved { color: var(--theme-primary); background: color-mix(in srgb, var(--theme-primary) 10%, white); }
-.status-pending { color: #d97706; background: #fff5df; }
-.status-rejected { color: #e11d48; background: #fff0f4; }
+.status-approved { color: #15803D; background: #DCFCE7; }
+.status-pending { color: #2563EB; background: #DBEAFE; }
+.status-rejected { color: #DC2626; background: #FEE2E2; }
 .sync-footnote { display: flex; flex-direction: column; gap: 4px; padding: 0 2px; color: #7b8496; font-size: 9px; line-height: 1.4; }
 .sync-footnote > span:first-child { font-weight: 700; color: #30364a; }
 .sync-footnote b { color: #353c50; }
@@ -341,13 +300,13 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .data-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 34px; border-bottom: 1px solid #e5e8ed; color: #6d7892; font-size: 11px; }
 .data-row:last-child { border-bottom: 0; }
 .data-row strong { color: #5c6882; text-align: right; font-size: 11px; font-weight: 500; }
-.data-row strong.positive { color: #16a761; font-weight: 600; }
-.data-row strong.negative { color: var(--theme-primary); font-weight: 600; }
+.data-row strong.positive { color: #15803D; font-weight: 600; }
+.data-row strong.negative { color: #DC2626; font-weight: 600; }
 .transaction-status-note { margin: -5px 0 15px; padding: 11px 12px; border: 1px solid color-mix(in srgb, var(--theme-primary) 14%, white); border-radius: 13px; background: var(--theme-soft); }
 .transaction-status-note h2 { margin: 0 0 4px; color: #252b40; font-size: 12px; }
 .transaction-status-note p { margin: 0; color: #687590; font-size: 10px; line-height: 1.45; }
 .rejection-card { display: grid; grid-template-columns: 54px minmax(0,1fr); align-items: center; gap: 12px; margin: 3px 0 16px; padding: 15px 13px; border-radius: 16px; background: var(--theme-soft); }
-.rejection-icon { width: 47px; height: 47px; display: grid; place-items: center; color: #ed2768; border: 3px solid #ed2768; border-radius: 50%; }
+.rejection-icon { width: 47px; height: 47px; display: grid; place-items: center; color: #DC2626; border: 3px solid #DC2626; border-radius: 50%; }
 .rejection-card strong { font-size: 15px; }
 .rejection-card p { margin: 4px 0 0; color: #63708a; font-size: 12px; line-height: 1.4; }
 .api-audit-details { margin: 0 0 11px; border: 1px solid #eceef3; border-radius: 13px; overflow: hidden; }
@@ -436,33 +395,38 @@ body { background: #f5f5f7; color: #12172b; }
 .bottom-tabs button { color: #66728e; }
 .icon-button { color: #151a2e; }
 .button-primary { background: var(--theme-primary); }
-.brand-logo { min-height: 30px; }
-.brand-logo img { display: block; width: min(100%,128px); height: 42px; object-fit: contain; object-position: center; }
-.brand-logo-compact img { height: 32px; max-width: 78px; }
-.brand-logo-zalora .wordmark-zalora { color: #111; letter-spacing: .18em; font-size: 12px; font-weight: 500; }
-.merchant-logo-box .brand-logo img { width: 88px; height: 40px; }
-.transaction-logo .brand-logo img { width: 50px; height: 36px; }
-.featured-card .brand-logo { position: relative; z-index: 1; height: 32px; justify-content: flex-start; margin-bottom: 13px; }
-.featured-card .brand-logo img { width: min(100%,110px); height: 30px; object-position: left center; }
+.brand-logo { box-sizing: border-box; width: 100%; min-width: 0; min-height: 30px; max-width: 100%; }
+.brand-logo img { display: block; width: auto; height: 32px; max-width: 100%; flex: 0 0 auto; object-fit: contain; object-position: center; }
+.brand-logo-agoda img { height: 34px; max-width: 76px; }
+.brand-logo-compact img { width: auto; height: 20px; max-width: 28px; }
+.merchant-logo-box .brand-logo img { width: auto; height: 28px; max-width: 42px; }
+.merchant-logo-box .brand-logo-agoda img { height: 34px; max-width: 76px; }
+.transaction-logo .brand-logo img { width: auto; height: 18px; max-width: 25px; }
+.featured-card .brand-logo { position: relative; z-index: 1; display: flex; width: 100%; height: 36px; justify-content: flex-start; gap: 5px; margin-bottom: 9px; padding: 3px 6px; border-radius: 9px; background: #fff; }
+.featured-card .brand-logo img { width: auto; height: 26px; max-width: 46px; object-position: center; }
 .trip-sticky-cta { position: static; bottom: auto; z-index: auto; flex-direction: column; align-items: center; gap: 6px; margin: 10px -20px 0; padding: 10px 0 12px; background: #fff; }
 
 .ledger-filters { justify-content: space-between; gap: 12px; }
 .transaction-merchant-card { display: grid; grid-template-columns: 76px minmax(0,1fr) auto; align-items: center; gap: 10px; min-height: 84px; padding: 10px; margin: 0 0 17px; border: 1px solid #e8ebf1; border-radius: 16px; box-shadow: 0 3px 14px rgba(22,30,52,.035); }
-.transaction-merchant-logo { width: 76px; height: 56px; display: grid; place-items: center; }
-.transaction-merchant-logo .brand-logo img { max-width: 74px; height: 42px; }
+.transaction-merchant-logo { width: 76px; height: 56px; display: grid; place-items: center; border-radius: 12px; background: #fff; }
+.transaction-merchant-logo .brand-logo img { width: auto; max-width: 50px; height: 32px; }
 .transaction-merchant-name { display: flex; min-width: 0; flex-direction: column; gap: 5px; }
 .transaction-merchant-name strong { font-size: 14px; }
 .transaction-merchant-name span { color: #71809b; font-size: 10px; line-height: 1.25; }
 .transaction-merchant-card .status-pill { min-height: 32px; font-size: 11px; }
-.data-row strong.pending { color: #c66b00; }
-.data-row strong.approved { color: #075fe5; }
+.data-row strong.pending { color: #2563EB; }
+.data-row strong.approved { color: #15803D; }
+.data-row strong.rejected { color: #DC2626; }
+.data-row strong.status-pill.status-pending { color: #2563EB; background: #DBEAFE; }
+.data-row strong.status-pill.status-approved { color: #15803D; background: #DCFCE7; }
+.data-row strong.status-pill.status-rejected { color: #DC2626; background: #FEE2E2; }
 .rejection-card { display: grid; grid-template-columns: 54px minmax(0,1fr); align-items: center; gap: 12px; margin: 3px 0 16px; padding: 15px 13px; border-radius: 16px; background: var(--theme-soft); }
-.rejection-icon { width: 47px; height: 47px; display: grid; place-items: center; color: #ed2768; border: 3px solid #ed2768; border-radius: 50%; }
+.rejection-icon { width: 47px; height: 47px; display: grid; place-items: center; color: #DC2626; border: 3px solid #DC2626; border-radius: 50%; }
 .rejection-card strong { font-size: 15px; }
 .rejection-card p { margin: 4px 0 0; color: #63708a; font-size: 12px; line-height: 1.4; }
-.terms-brand-banner .brand-logo { justify-content: flex-start; width: 130px; height: 31px; }
-.terms-brand-banner .brand-logo img { width: 130px; height: 30px; object-position: left; }
-.terms-brand-banner .brand-wordmark { font-size: 14px; }
+.terms-brand-banner .brand-logo { justify-content: flex-start; width: 130px; height: auto; padding: 2px 0; background: #fff; }
+.terms-brand-banner .brand-logo img { width: auto; height: 27px; max-width: 58px; object-position: center; }
+.terms-brand-banner .brand-wordmark { max-width: 70px; font-size: 14px; }
 @media (max-width:480px) {
   body { background: #fff; }
   .prototype-stage { background: #fff; }
@@ -556,8 +520,6 @@ body {
 .prototype-stage .step-number { background: var(--theme-strong); }
 .prototype-stage .ledger-filters button.active { color: var(--theme-strong); }
 .prototype-stage .ledger-filters button.active::after { background: var(--theme-primary); }
-.prototype-stage .status-approved { color: var(--theme-strong); background: color-mix(in srgb, var(--theme-primary) 10%, white); }
-.prototype-stage .transaction-status-note,
 .prototype-stage .support-card { border-color: color-mix(in srgb, var(--theme-primary) 13%, white); background: color-mix(in srgb, var(--theme-primary) 5%, white); }
 .prototype-stage .support-card > svg { color: var(--theme-strong); }
 .prototype-stage .terms-topic-symbol > span,
@@ -583,39 +545,38 @@ body {
 .prototype-stage .user-greeting { margin: 0; }
 
 .home-greeting-row { margin: 4px 0 12px; }
+.home-greeting-row-unbranded { justify-content: flex-end; }
 .partner-lockup { display: flex; min-width: 0; align-items: center; gap: 9px; }
-.partner-logo-fallback,
-.partner-logo-image { width: 38px; height: 38px; flex: 0 0 38px; border-radius: 12px; }
-.partner-logo-fallback { display: grid; place-items: center; color: #FFFFFF; background: var(--theme-strong); font-size: 12px; font-weight: 800; letter-spacing: -.03em; }
-.partner-logo-image { object-fit: contain; padding: 3px; background: #FFFFFF; border: 1px solid color-mix(in srgb, var(--theme-primary) 12%, white); }
+.partner-logo-image { width: 38px; height: 38px; flex: 0 0 38px; border-radius: 12px; object-fit: contain; padding: 3px; background: #FFFFFF; border: 1px solid color-mix(in srgb, var(--theme-primary) 12%, white); }
 .partner-lockup-copy { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
 .partner-lockup-copy strong { max-width: 160px; overflow: hidden; color: var(--theme-navy); font-size: 13px; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap; }
 .partner-lockup-copy small { color: #71809B; font-size: 9px; }
 .home-greeting-copy { margin: 0 0 13px; }
-.home-greeting-copy .eyebrow-muted { color: #7B88A3; font-size: 11px; }
-.home-greeting-copy .user-greeting { font-size: 23px; }
-.brand-logo { display: flex; min-width: 0; align-items: center; justify-content: flex-start; gap: 7px; }
-.brand-logo img { display: block; width: 27px; height: 27px; flex: 0 0 auto; object-fit: contain; object-position: center; }
-.brand-logo-agoda img { width: 56px; height: 27px; }
-.brand-wordmark { min-width: 0; overflow: hidden; color: var(--theme-navy); font-size: 11px; font-weight: 700; text-overflow: ellipsis; }
-.brand-logo-compact { gap: 4px; }
-.brand-logo-compact img { width: 20px; height: 20px; }
-.brand-logo-compact.brand-logo-agoda img { width: 42px; height: 20px; }
+.home-greeting-copy .user-greeting { font-size: 23px; line-height: 1.15; letter-spacing: -.04em; }
+.brand-logo { display: flex; box-sizing: border-box; width: 100%; min-width: 0; min-height: 30px; max-width: 100%; align-items: center; justify-content: center; gap: 7px; padding: 2px 4px; }
+.brand-logo img { display: block; width: auto; height: 32px; max-width: 100%; flex: 0 0 auto; object-fit: contain; object-position: center; }
+.brand-logo-agoda img { height: 34px; max-width: 76px; }
+.brand-wordmark { flex: 0 1 auto; min-width: 0; max-width: 100%; overflow: hidden; color: var(--theme-navy); font-size: 11px; font-weight: 700; text-overflow: ellipsis; }
+.brand-logo-compact { gap: 4px; padding: 2px; }
+.brand-logo-compact img { width: auto; height: 20px; max-width: 28px; }
 .brand-logo-compact .brand-wordmark { font-size: 9px; }
-.merchant-logo-box .brand-logo { justify-content: center; }
-.transaction-logo .brand-logo { justify-content: center; flex-wrap: wrap; }
-.merchant-profile-logo .brand-logo { flex-direction: column; gap: 2px; }
-.merchant-profile-logo .brand-logo img { width: 31px; height: 28px; }
-.merchant-profile-logo .brand-logo-agoda img { width: 55px; height: 25px; }
+.merchant-logo-box .brand-logo { justify-content: center; gap: 5px; padding: 2px 4px; }
+.merchant-logo-box .brand-logo img { width: auto; height: 28px; max-width: 42px; }
+.merchant-logo-box .brand-logo-agoda img { height: 34px; max-width: 76px; }
+.merchant-logo-box .brand-wordmark { font-size: 11px; }
+.transaction-logo .brand-logo { justify-content: center; flex-wrap: wrap; gap: 2px; padding: 2px; }
+.transaction-logo .brand-logo img { width: auto; height: 18px; max-width: 25px; }
+.transaction-logo .brand-wordmark { font-size: 9px; }
+.merchant-profile-logo .brand-logo { flex-direction: column; gap: 2px; padding: 3px; background: #fff; }
+.merchant-profile-logo .brand-logo img { width: auto; height: 28px; max-width: 62px; }
+.merchant-profile-logo .brand-logo-agoda img { width: auto; height: 28px; max-width: 58px; }
 .merchant-profile-logo .brand-wordmark { max-width: 74px; font-size: 10px; }
-.featured-card .brand-logo { position: relative; z-index: 1; margin-bottom: 9px; }
+.featured-card .brand-logo { position: relative; z-index: 1; display: flex; width: 100%; height: 36px; justify-content: flex-start; gap: 5px; margin-bottom: 9px; padding: 3px 6px; border-radius: 9px; background: #fff; }
+.featured-card .brand-logo img { width: auto; height: 26px; max-width: 46px; object-position: center; }
 
-.prototype-disclosure { max-width: 350px; margin: 0 auto; padding: 0 20px; color: #71809B; font-size: 10px; line-height: 1.4; text-align: center; }
-.demo-data-note { margin: 10px 0 13px; padding: 9px 11px; border: 1px solid color-mix(in srgb, var(--theme-primary) 12%, white); border-radius: 12px; color: #64728E; background: var(--theme-soft); font-size: 10px; line-height: 1.45; }
+.cashback-disclosure { max-width: 350px; margin: 0 auto; padding: 0 20px; color: #71809B; font-size: 10px; line-height: 1.4; text-align: center; }
 
 .demo-toolbar { position: absolute; z-index: 20; top: 13px; right: 18px; display: flex; align-items: center; gap: 13px; }
-.demo-toolbar-caption { display: none; }
-.demo-toolbar-kicker { color: var(--theme-strong); font-size: 9px; font-weight: 800; letter-spacing: .12em; }
 .demo-settings-trigger { display: inline-flex; min-height: 39px; align-items: center; justify-content: center; gap: 8px; padding: 0 14px; border: 1px solid color-mix(in srgb, var(--theme-primary) 18%, white); border-radius: 999px; color: var(--theme-navy); background: rgba(255,255,255,.88); box-shadow: 0 5px 18px color-mix(in srgb, var(--theme-navy) 9%, transparent); font-size: 11px; font-weight: 700; transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease; }
 .demo-settings-trigger:hover { transform: translateY(-1px); border-color: var(--theme-primary); box-shadow: 0 9px 22px color-mix(in srgb, var(--theme-primary) 13%, transparent); }
 .demo-settings-trigger svg { color: var(--theme-primary); }
@@ -646,7 +607,7 @@ body {
 .theme-choice-swatch { width: 24px; height: 24px; flex: 0 0 24px; border-radius: 8px; }
 .theme-choice > span:nth-child(2) { min-width: 0; flex: 1; }
 .theme-choice > svg { color: var(--theme-strong); }
-.demo-settings-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.demo-settings-fields { display: grid; grid-template-columns: 1fr; gap: 9px; }
 .demo-settings-field { display: flex; min-width: 0; flex-direction: column; gap: 6px; color: #42506D; font-size: 10px; font-weight: 650; }
 .demo-settings-field input { width: 100%; min-height: 40px; padding: 0 11px; border: 1px solid #DDE3F0; border-radius: 10px; color: #142A55; background: #FFFFFF; font-size: 11px; }
 .demo-color-row { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 11px; }
@@ -657,8 +618,8 @@ body {
 .demo-color-control input::-webkit-color-swatch { border: 1px solid rgba(20,42,85,.12); border-radius: 6px; }
 .demo-color-control code { color: #5D6A84; font-size: 10px; }
 .demo-logo-row { display: flex; align-items: center; gap: 9px; margin-top: 12px; padding: 9px; border: 1px solid #E8ECF6; border-radius: 12px; background: #FBFCFF; }
-.demo-logo-preview { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; overflow: hidden; border-radius: 10px; color: #FFFFFF; background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary)); font-size: 11px; font-weight: 800; }
-.demo-logo-preview img { width: 100%; height: 100%; object-fit: contain; background: #FFFFFF; }
+.demo-logo-preview { display: grid; width: 48px; height: 42px; flex: 0 0 48px; place-items: center; overflow: hidden; border: 1px dashed #DDE3F0; border-radius: 10px; background: #FFFFFF; }
+.demo-logo-preview img { width: 100%; height: 100%; padding: 4px; object-fit: contain; background: #FFFFFF; }
 .demo-logo-copy { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 3px; }
 .demo-logo-copy strong { color: var(--theme-navy); font-size: 10px; }
 .demo-logo-copy span { color: #71809B; font-size: 9px; }
@@ -676,8 +637,7 @@ body {
 
 @media (max-width: 700px) {
   .demo-toolbar { right: 12px; }
-  .demo-toolbar-caption { display: none; }
-  .prototype-disclosure { font-size: 9px; }
+  .cashback-disclosure { font-size: 9px; }
 }
 
 @media (max-width: 480px) {
@@ -692,6 +652,11 @@ body {
   .demo-reset-button, .demo-copy-button { flex: 1; }
 }
 
+@media (max-width: 360px) {
+  .merchant-logo-box .brand-logo img { height: 24px; max-width: 34px; }
+  .merchant-logo-box .brand-wordmark { font-size: 9px; }
+}
+
 @media (max-width: 350px) {
   .demo-settings-panel { padding: 14px; }
   .theme-choice { gap: 6px; padding-inline: 7px; font-size: 9px; }
@@ -702,3 +667,22 @@ body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+.prototype-stage .ledger-filters button.status-filter-pending,
+.prototype-stage .ledger-filters button.status-filter-pending.active { color: #2563EB; background: #DBEAFE; }
+.prototype-stage .ledger-filters button.status-filter-approved,
+.prototype-stage .ledger-filters button.status-filter-approved.active { color: #15803D; background: #DCFCE7; }
+.prototype-stage .ledger-filters button.status-filter-rejected,
+.prototype-stage .ledger-filters button.status-filter-rejected.active { color: #DC2626; background: #FEE2E2; }
+.prototype-stage .ledger-filters button.status-filter-pending,
+.prototype-stage .ledger-filters button.status-filter-approved,
+.prototype-stage .ledger-filters button.status-filter-rejected { min-height: 30px; margin: 6px 0; padding: 0 9px; border-radius: 9px; }
+.prototype-stage .ledger-filters button.status-filter-pending.active::after { background: #2563EB; }
+.prototype-stage .ledger-filters button.status-filter-approved.active::after { background: #15803D; }
+.prototype-stage .ledger-filters button.status-filter-rejected.active::after { background: #DC2626; }
+.prototype-stage .transaction-status-note[data-status='pending'] { border-color: #DBEAFE; background: #DBEAFE; }
+.prototype-stage .transaction-status-note[data-status='approved'] { border-color: #DCFCE7; background: #DCFCE7; }
+.prototype-stage .transaction-status-note[data-status='rejected'] { border-color: #FEE2E2; background: #FEE2E2; }
+.prototype-stage .transaction-status-note[data-status='pending'] h2 { color: #2563EB; }
+.prototype-stage .transaction-status-note[data-status='approved'] h2 { color: #15803D; }
+.prototype-stage .transaction-status-note[data-status='rejected'] h2 { color: #DC2626; }

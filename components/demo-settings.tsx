@@ -4,11 +4,11 @@ import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from 
 import { Check, Copy, ImagePlus, Palette, RotateCcw, Settings2, X } from 'lucide-react'
 
 export const THEME_PRESETS = {
-  raspberry: { name: 'Charcoal & Raspberry — Default Showcase', primary: '#C4476C', secondary: '#9F2850', strong: '#9F2850', navy: '#242326', soft: '#F7E4EA', background: '#FAF8F7' },
-  blue: { name: 'Blue Wallet', primary: '#3457E8', secondary: '#16B8AD', strong: '#142A55', navy: '#142A55', soft: '#EDF2FF', background: '#FAF8F7' },
-  purple: { name: 'Purple Wallet', primary: '#783DE1', secondary: '#E48CFF', strong: '#35205B', navy: '#35205B', soft: '#F4EDFF', background: '#FAF8F7' },
-  green: { name: 'Green Digital Bank', primary: '#087E67', secondary: '#A3D84F', strong: '#12463E', navy: '#12463E', soft: '#EAF7F1', background: '#FAF8F7' },
-  orange: { name: 'Orange Wallet', primary: '#DE641F', secondary: '#F5B64D', strong: '#663319', navy: '#663319', soft: '#FFF3E7', background: '#FAF8F7' },
+  raspberry: { name: 'Charcoal & Raspberry', primary: '#C4476C', secondary: '#9F2850', strong: '#9F2850', navy: '#242326', soft: '#F7E4EA', background: '#FAF8F7' },
+  blue: { name: 'Blue', primary: '#3457E8', secondary: '#16B8AD', strong: '#142A55', navy: '#142A55', soft: '#EDF2FF', background: '#FAF8F7' },
+  purple: { name: 'Purple', primary: '#783DE1', secondary: '#E48CFF', strong: '#35205B', navy: '#35205B', soft: '#F4EDFF', background: '#FAF8F7' },
+  green: { name: 'Green', primary: '#087E67', secondary: '#A3D84F', strong: '#12463E', navy: '#12463E', soft: '#EAF7F1', background: '#FAF8F7' },
+  orange: { name: 'Orange', primary: '#DE641F', secondary: '#F5B64D', strong: '#663319', navy: '#663319', soft: '#FFF3E7', background: '#FAF8F7' },
 } as const
 
 export const DEMO_CUSTOMERS = {
@@ -35,14 +35,15 @@ export const DEFAULT_BRAND_SETTINGS: BrandSettings = {
   themeId: 'raspberry',
   baseThemeId: 'raspberry',
   customerId: 'athirah',
-  partnerName: 'Perks',
+  partnerName: '',
   cashbackName: 'Cashback',
   primary: THEME_PRESETS.raspberry.primary,
   secondary: THEME_PRESETS.raspberry.secondary,
   logoDataUrl: '',
 }
 
-export const BRAND_SETTINGS_STORAGE_KEY = 'cashback-demo-brand-settings'
+export const BRAND_SETTINGS_STORAGE_KEY = 'cashback-marketplace-brand-settings-v2'
+export const LEGACY_BRAND_SETTINGS_STORAGE_KEY = 'cashback-demo-brand-settings'
 
 export function isPresetThemeId(value: string | null): value is PresetThemeId {
   return value !== null && Object.hasOwn(THEME_PRESETS, value)
@@ -79,8 +80,8 @@ export function readBrandSettings(value: string | null): BrandSettings | null {
       themeId,
       baseThemeId,
       customerId: parsed.customerId === 'justin-bieber' ? 'justin-bieber' : 'athirah',
-      partnerName: typeof parsed.partnerName === 'string' ? parsed.partnerName.trim().slice(0, 40) || 'Perks' : 'Perks',
-      cashbackName: typeof parsed.cashbackName === 'string' ? parsed.cashbackName.trim().slice(0, 30) || 'Cashback' : 'Cashback',
+      partnerName: typeof parsed.partnerName === 'string' ? parsed.partnerName.trim().slice(0, 40) : '',
+      cashbackName: 'Cashback',
       primary,
       secondary,
       logoDataUrl,
@@ -130,7 +131,7 @@ export default function DemoSettings({ settings, storageAvailable, onChange, onR
     }
 
     if (file.size > 512 * 1024) {
-      setUploadMessage('Choose an image smaller than 512 KB to keep this demo local and lightweight.')
+      setUploadMessage('Choose an image smaller than 512 KB.')
       return
     }
 
@@ -155,21 +156,17 @@ export default function DemoSettings({ settings, storageAvailable, onChange, onR
 
   return (
     <>
-      <div className="demo-toolbar" aria-label="Presenter controls">
-        <div className="demo-toolbar-caption">
-          <span className="demo-toolbar-kicker">PRESENTATION PREVIEW</span>
-          <span>{storageAvailable === false ? 'Browser storage unavailable' : 'Sample data · local branding'}</span>
-        </div>
+      <div className="demo-toolbar" aria-label="Partner settings">
         <button className="demo-settings-trigger" type="button" onClick={() => setIsOpen(true)} aria-haspopup="dialog">
           <Settings2 size={16} aria-hidden="true" />
-          Demo Settings
+          Partner settings
         </button>
       </div>
 
       <dialog
         ref={dialogRef}
         className="demo-settings-dialog"
-        aria-labelledby="demo-settings-title"
+        aria-labelledby="partner-settings-title"
         onClose={() => setIsOpen(false)}
         onClick={(event) => {
           if (event.target === event.currentTarget) closeDialog()
@@ -179,11 +176,11 @@ export default function DemoSettings({ settings, storageAvailable, onChange, onR
           <header className="demo-settings-header">
             <div className="demo-settings-heading-icon"><Palette size={19} aria-hidden="true" /></div>
             <div>
-              <p className="demo-settings-eyebrow">PRESENTER CONTROLS</p>
-              <h2 id="demo-settings-title">Demo Settings</h2>
-              <p>Make this showcase feel like your wallet.</p>
+              <p className="demo-settings-eyebrow">WALLET CUSTOMISATION</p>
+              <h2 id="partner-settings-title">Partner settings</h2>
+              <p>Adjust colours, partner identity and customer profile.</p>
             </div>
-            <button className="demo-settings-close" type="button" onClick={closeDialog} aria-label="Close Demo Settings"><X size={19} /></button>
+            <button className="demo-settings-close" type="button" onClick={closeDialog} aria-label="Close partner settings"><X size={19} /></button>
           </header>
 
           <section className="demo-settings-section" aria-labelledby="theme-choice-title">
@@ -214,9 +211,9 @@ export default function DemoSettings({ settings, storageAvailable, onChange, onR
 
           <section className="demo-settings-section" aria-labelledby="customer-choice-title">
             <div className="demo-settings-section-title">
-              <div><h3 id="customer-choice-title">Demo Customer</h3><p>Switch the sample customer greeting.</p></div>
+              <div><h3 id="customer-choice-title">Customer profile</h3><p>Choose the profile shown in the wallet.</p></div>
             </div>
-            <div className="demo-customer-grid" role="group" aria-label="Demo customer">
+            <div className="demo-customer-grid" role="group" aria-label="Customer profiles">
               {(Object.keys(DEMO_CUSTOMERS) as DemoCustomerId[]).map((customerId) => {
                 const customer = DEMO_CUSTOMERS[customerId]
                 const selected = settings.customerId === customerId
@@ -237,11 +234,7 @@ export default function DemoSettings({ settings, storageAvailable, onChange, onR
             <div className="demo-settings-fields">
               <label className="demo-settings-field">
                 <span>Partner display name</span>
-                <input value={settings.partnerName} maxLength={40} onChange={(event) => onChange({ ...settings, partnerName: event.currentTarget.value })} placeholder="Your wallet name" />
-              </label>
-              <label className="demo-settings-field">
-                <span>Cashback feature name</span>
-                <input value={settings.cashbackName} maxLength={30} onChange={(event) => onChange({ ...settings, cashbackName: event.currentTarget.value })} placeholder="Cashback" />
+                <input value={settings.partnerName} maxLength={40} onChange={(event) => onChange({ ...settings, partnerName: event.currentTarget.value })} placeholder="Enter partner name" />
               </label>
             </div>
             <div className="demo-color-row">
@@ -255,8 +248,8 @@ export default function DemoSettings({ settings, storageAvailable, onChange, onR
               </label>
             </div>
             <div className="demo-logo-row">
-              <div className="demo-logo-preview">
-                {settings.logoDataUrl ? <img src={settings.logoDataUrl} alt={`${settings.partnerName} logo preview`} /> : <span aria-hidden="true">{settings.partnerName.trim().slice(0, 2).toUpperCase() || 'P'}</span>}
+              <div className="demo-logo-preview" aria-hidden={!settings.logoDataUrl}>
+                {settings.logoDataUrl && <img src={settings.logoDataUrl} alt={`${settings.partnerName || 'Partner'} logo preview`} />}
               </div>
               <div className="demo-logo-copy"><strong>Partner logo</strong><span>PNG, JPEG or WebP · up to 512 KB</span></div>
               <label className="demo-logo-upload" htmlFor="partner-logo-upload"><ImagePlus size={16} aria-hidden="true" /><span>{settings.logoDataUrl ? 'Replace' : 'Upload'}</span></label>
@@ -273,7 +266,7 @@ export default function DemoSettings({ settings, storageAvailable, onChange, onR
             </div>
             <div className="demo-settings-actions">
               <button className="demo-reset-button" type="button" onClick={() => { onReset(); setUploadMessage(''); setCopyMessage('') }}><RotateCcw size={15} aria-hidden="true" />Reset settings</button>
-              <button className="demo-copy-button" type="button" onClick={copyLink} disabled={settings.themeId === 'custom'}><Copy size={15} aria-hidden="true" />Copy demo link</button>
+              <button className="demo-copy-button" type="button" onClick={copyLink} disabled={settings.themeId === 'custom'}><Copy size={15} aria-hidden="true" />Copy theme link</button>
             </div>
           </footer>
         </div>
