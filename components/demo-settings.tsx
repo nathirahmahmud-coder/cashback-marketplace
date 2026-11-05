@@ -4,18 +4,26 @@ import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from 
 import { Check, Copy, ImagePlus, Palette, RotateCcw, Settings2, X } from 'lucide-react'
 
 export const THEME_PRESETS = {
-  default: { name: 'Default Showcase', primary: '#3457E8', secondary: '#16B8AD', navy: '#142A55', soft: '#EDF2FF' },
-  purple: { name: 'Purple Wallet', primary: '#7046D8', secondary: '#B58CF3', navy: '#351C63', soft: '#F2EDFF' },
-  green: { name: 'Green Digital Bank', primary: '#087C55', secondary: '#B5DF56', navy: '#154B3C', soft: '#EAF7EE' },
-  orange: { name: 'Orange Wallet', primary: '#C65314', secondary: '#F4B542', navy: '#4C2D20', soft: '#FFF3E6' },
+  raspberry: { name: 'Charcoal & Raspberry — Default Showcase', primary: '#C4476C', secondary: '#9F2850', strong: '#9F2850', navy: '#242326', soft: '#F7E4EA', background: '#FAF8F7' },
+  blue: { name: 'Blue Wallet', primary: '#3457E8', secondary: '#16B8AD', strong: '#142A55', navy: '#142A55', soft: '#EDF2FF', background: '#FAF8F7' },
+  purple: { name: 'Purple Wallet', primary: '#783DE1', secondary: '#E48CFF', strong: '#35205B', navy: '#35205B', soft: '#F4EDFF', background: '#FAF8F7' },
+  green: { name: 'Green Digital Bank', primary: '#087E67', secondary: '#A3D84F', strong: '#12463E', navy: '#12463E', soft: '#EAF7F1', background: '#FAF8F7' },
+  orange: { name: 'Orange Wallet', primary: '#DE641F', secondary: '#F5B64D', strong: '#663319', navy: '#663319', soft: '#FFF3E7', background: '#FAF8F7' },
 } as const
 
+export const DEMO_CUSTOMERS = {
+  athirah: { name: 'Athirah', label: 'Default' },
+  'justin-bieber': { name: 'Justin Bieber', label: 'Alternative' },
+} as const
+
+export type DemoCustomerId = keyof typeof DEMO_CUSTOMERS
 export type PresetThemeId = keyof typeof THEME_PRESETS
 export type ThemeId = PresetThemeId | 'custom'
 
 export type BrandSettings = {
   themeId: ThemeId
   baseThemeId: PresetThemeId
+  customerId: DemoCustomerId
   partnerName: string
   cashbackName: string
   primary: string
@@ -24,12 +32,13 @@ export type BrandSettings = {
 }
 
 export const DEFAULT_BRAND_SETTINGS: BrandSettings = {
-  themeId: 'default',
-  baseThemeId: 'default',
+  themeId: 'raspberry',
+  baseThemeId: 'raspberry',
+  customerId: 'athirah',
   partnerName: 'Perks',
   cashbackName: 'Cashback',
-  primary: THEME_PRESETS.default.primary,
-  secondary: THEME_PRESETS.default.secondary,
+  primary: THEME_PRESETS.raspberry.primary,
+  secondary: THEME_PRESETS.raspberry.secondary,
   logoDataUrl: '',
 }
 
@@ -48,16 +57,28 @@ export function readBrandSettings(value: string | null): BrandSettings | null {
   if (!value) return null
 
   try {
-    const parsed = JSON.parse(value) as Partial<BrandSettings>
-    const baseThemeId: PresetThemeId = typeof parsed.baseThemeId === 'string' && isPresetThemeId(parsed.baseThemeId) ? parsed.baseThemeId : 'default'
-    const themeId: ThemeId = parsed.themeId === 'custom' ? 'custom' : typeof parsed.themeId === 'string' && isPresetThemeId(parsed.themeId) ? parsed.themeId : 'default'
-    const primary = typeof parsed.primary === 'string' && /^#[\da-f]{6}$/i.test(parsed.primary) ? parsed.primary : THEME_PRESETS[baseThemeId].primary
-    const secondary = typeof parsed.secondary === 'string' && /^#[\da-f]{6}$/i.test(parsed.secondary) ? parsed.secondary : THEME_PRESETS[baseThemeId].secondary
+    const parsed = JSON.parse(value) as Record<string, unknown>
+    const baseThemeId: PresetThemeId = parsed.baseThemeId === 'default'
+      ? 'raspberry'
+      : typeof parsed.baseThemeId === 'string' && isPresetThemeId(parsed.baseThemeId)
+        ? parsed.baseThemeId
+        : 'raspberry'
+    const themeId: ThemeId = parsed.themeId === 'custom'
+      ? 'custom'
+      : parsed.themeId === 'default'
+        ? 'raspberry'
+        : typeof parsed.themeId === 'string' && isPresetThemeId(parsed.themeId)
+          ? parsed.themeId
+          : 'raspberry'
+    const colorBase = themeId === 'custom' ? baseThemeId : themeId
+    const primary = themeId === 'custom' && typeof parsed.primary === 'string' && /^#[\da-f]{6}$/i.test(parsed.primary) ? parsed.primary : THEME_PRESETS[colorBase].primary
+    const secondary = themeId === 'custom' && typeof parsed.secondary === 'string' && /^#[\da-f]{6}$/i.test(parsed.secondary) ? parsed.secondary : THEME_PRESETS[colorBase].secondary
     const logoDataUrl = typeof parsed.logoDataUrl === 'string' && parsed.logoDataUrl.length <= 1_500_000 && /^data:image\/(png|jpeg|webp);base64,/i.test(parsed.logoDataUrl) ? parsed.logoDataUrl : ''
 
     return {
       themeId,
       baseThemeId,
+      customerId: parsed.customerId === 'justin-bieber' ? 'justin-bieber' : 'athirah',
       partnerName: typeof parsed.partnerName === 'string' ? parsed.partnerName.trim().slice(0, 40) || 'Perks' : 'Perks',
       cashbackName: typeof parsed.cashbackName === 'string' ? parsed.cashbackName.trim().slice(0, 30) || 'Cashback' : 'Cashback',
       primary,
@@ -168,7 +189,7 @@ export default function DemoSettings({ settings, storageAvailable, onChange, onR
           <section className="demo-settings-section" aria-labelledby="theme-choice-title">
             <div className="demo-settings-section-title">
               <div><h3 id="theme-choice-title">Choose a colour theme</h3><p>Updates every customer screen instantly.</p></div>
-              <span className="theme-choice-count">4 themes</span>
+              <span className="theme-choice-count">{Object.keys(THEME_PRESETS).length} themes</span>
             </div>
             <div className="theme-choice-grid" role="group" aria-label="Predefined colour themes">
               {(Object.keys(THEME_PRESETS) as PresetThemeId[]).map((themeId) => {
@@ -184,6 +205,24 @@ export default function DemoSettings({ settings, storageAvailable, onChange, onR
                   >
                     <span className="theme-choice-swatch" aria-hidden="true" style={{ background: `linear-gradient(135deg, ${theme.primary} 0 57%, ${theme.secondary} 57% 100%)` }} />
                     <span>{theme.name}</span>
+                    {selected && <Check size={15} aria-hidden="true" />}
+                  </button>
+                )
+              })}
+            </div>
+          </section>
+
+          <section className="demo-settings-section" aria-labelledby="customer-choice-title">
+            <div className="demo-settings-section-title">
+              <div><h3 id="customer-choice-title">Demo Customer</h3><p>Switch the sample customer greeting.</p></div>
+            </div>
+            <div className="demo-customer-grid" role="group" aria-label="Demo customer">
+              {(Object.keys(DEMO_CUSTOMERS) as DemoCustomerId[]).map((customerId) => {
+                const customer = DEMO_CUSTOMERS[customerId]
+                const selected = settings.customerId === customerId
+                return (
+                  <button key={customerId} className={`demo-customer-option ${selected ? 'demo-customer-option-selected' : ''}`} type="button" aria-pressed={selected} onClick={() => onChange({ ...settings, customerId })}>
+                    <span><strong>{customer.name}</strong><small>{customer.label}</small></span>
                     {selected && <Check size={15} aria-hidden="true" />}
                   </button>
                 )
@@ -233,7 +272,7 @@ export default function DemoSettings({ settings, storageAvailable, onChange, onR
               {copyMessage && <span role="status">{copyMessage}</span>}
             </div>
             <div className="demo-settings-actions">
-              <button className="demo-reset-button" type="button" onClick={() => { onReset(); setUploadMessage(''); setCopyMessage('') }}><RotateCcw size={15} aria-hidden="true" />Reset theme</button>
+              <button className="demo-reset-button" type="button" onClick={() => { onReset(); setUploadMessage(''); setCopyMessage('') }}><RotateCcw size={15} aria-hidden="true" />Reset settings</button>
               <button className="demo-copy-button" type="button" onClick={copyLink} disabled={settings.themeId === 'custom'}><Copy size={15} aria-hidden="true" />Copy demo link</button>
             </div>
           </footer>

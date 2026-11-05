@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import DemoSettings, { BRAND_SETTINGS_STORAGE_KEY, DEFAULT_BRAND_SETTINGS, getPresetBrandSettings, isPresetThemeId, readBrandSettings, THEME_PRESETS, type BrandSettings } from '@/components/demo-settings'
+import Image from 'next/image'
+import DemoSettings, { BRAND_SETTINGS_STORAGE_KEY, DEFAULT_BRAND_SETTINGS, DEMO_CUSTOMERS, getPresetBrandSettings, isPresetThemeId, readBrandSettings, THEME_PRESETS, type BrandSettings } from '@/components/demo-settings'
+import { MERCHANTS as merchants, type Merchant, type MerchantEventRate } from '@/components/merchant-data'
 import {
   ArrowDownUp,
   ArrowLeft,
@@ -37,21 +39,6 @@ type CashbackStatus = 'Pending' | 'Approved' | 'Rejected'
 const DEFAULT_CUSTOMER_ALLOCATION = 70
 const PLATFORM_COMMISSION_SHARE = 70
 
-type MerchantEventRate = { category: string; advertiserCommissionRate: number; customerAllocation?: number }
-
-type Merchant = {
-  id: string
-  name: string
-  logo: string
-  description: string
-  categories: string[]
-  eventRates: MerchantEventRate[]
-  detailRoute: 'merchant'
-  affiliateUrl: string | null
-  officialWebsite: string
-  terms: string[]
-}
-
 type Transaction = {
   id: string
   merchant: string
@@ -64,28 +51,6 @@ type Transaction = {
   purchaseAmount?: number
   estimatedAmount?: number
   statusUpdatedAt: string
-}
-
-const merchants: Merchant[] = [
-  { id: 'trip-com', name: 'Trip.com', logo: 'tripdotcom', description: 'Hotels, Flights & More', categories: ['Hotels', 'Flights', 'Car Rentals', 'Activities'], eventRates: [{ category: 'Hotels', advertiserCommissionRate: 12.24 }, { category: 'Flights', advertiserCommissionRate: 6.12 }, { category: 'Car Rentals', advertiserCommissionRate: 8.16 }, { category: 'Activities', advertiserCommissionRate: 8.16 }], detailRoute: 'merchant', affiliateUrl: null, officialWebsite: 'https://www.trip.com', terms: ['Cancelled, refunded or no-show bookings may be excluded.', 'Unapproved promo codes and untracked purchases may be ineligible.'] },
-  { id: 'agoda', name: 'Agoda', logo: 'agoda', description: 'Hotels & Homes', categories: ['Hotels', 'Homes'], eventRates: [{ category: 'Hotels', advertiserCommissionRate: 5, customerAllocation: 50 }, { category: 'Homes', advertiserCommissionRate: 10.2 }], detailRoute: 'merchant', affiliateUrl: null, officialWebsite: 'https://www.agoda.com', terms: ['Only completed and eligible hotel or home bookings may qualify.', 'Cancelled, refunded, no-show or otherwise excluded bookings may not earn cashback.'] },
-  { id: 'klook', name: 'Klook', logo: 'klook', description: 'Activities & Attractions', categories: ['Activities', 'Attractions'], eventRates: [{ category: 'Activities', advertiserCommissionRate: 8.16 }, { category: 'Attractions', advertiserCommissionRate: 8.16 }], detailRoute: 'merchant', affiliateUrl: null, officialWebsite: 'https://www.klook.com', terms: ['Eligible activities and attraction bookings are subject to the offer shown at purchase.', 'Cancelled, refunded or untracked bookings may be excluded.'] },
-  { id: 'zalora', name: 'ZALORA', logo: 'zalora', description: 'Fashion & Lifestyle', categories: ['Fashion', 'Lifestyle'], eventRates: [{ category: 'Fashion', advertiserCommissionRate: 16.33 }, { category: 'Lifestyle', advertiserCommissionRate: 16.33 }], detailRoute: 'merchant', affiliateUrl: null, officialWebsite: 'https://www.zalora.com.my', terms: ['Eligible purchases must be completed through the Shop Now offer path.', 'Returned or refunded purchases and excluded items may not qualify.'] },
-  { id: 'lazada', name: 'Lazada', logo: 'lazada', description: 'Online Shopping', categories: ['Online Shopping'], eventRates: [{ category: 'Online Shopping', advertiserCommissionRate: 12.24 }], detailRoute: 'merchant', affiliateUrl: null, officialWebsite: 'https://www.lazada.com.my', terms: ['Only eligible orders placed through the tracked offer path may qualify.', 'Cancelled orders, returned items and excluded products may not earn cashback.'] },
-  { id: 'shopee', name: 'Shopee', logo: 'shopee', description: 'Online Shopping', categories: ['Online Shopping'], eventRates: [{ category: 'Online Shopping', advertiserCommissionRate: 8.16 }], detailRoute: 'merchant', affiliateUrl: null, officialWebsite: 'https://shopee.com.my', terms: ['Eligible products and completed orders are subject to the merchant offer.', 'Cancelled, returned or untracked orders may be excluded.'] },
-  { id: 'adidas', name: 'adidas', logo: 'adidas', description: 'Fashion & Sports', categories: ['Fashion', 'Sports'], eventRates: [{ category: 'Fashion', advertiserCommissionRate: 16.33 }, { category: 'Sports', advertiserCommissionRate: 16.33 }], detailRoute: 'merchant', affiliateUrl: null, officialWebsite: 'https://www.adidas.com.my', terms: ['Eligible fashion and sports items are subject to the merchant offer.', 'Returned, refunded or excluded items may not qualify for cashback.'] },
-  { id: 'uniqlo', name: 'UNIQLO', logo: 'uniqlo', description: 'Fashion & Lifestyle', categories: ['Fashion', 'Lifestyle'], eventRates: [{ category: 'Fashion', advertiserCommissionRate: 12.24 }, { category: 'Lifestyle', advertiserCommissionRate: 12.24 }], detailRoute: 'merchant', affiliateUrl: null, officialWebsite: 'https://www.uniqlo.com/my', terms: ['Eligible purchases must follow the merchant-specific offer conditions.', 'Cancelled, refunded or excluded purchases may not qualify.'] },
-]
-
-const merchantAbout: Record<Merchant['id'], string> = {
-  'trip-com': 'Plan your next trip with Trip.com, where you can book stays, flights, car rentals and activities in one place. Earn cashback on eligible bookings; rates vary by category and offer terms.',
-  agoda: 'Find a stay for every kind of getaway with Agoda, from hotels to private homes. Earn cashback on eligible bookings; rates and eligibility are subject to offer terms.',
-  klook: 'Make more of every trip with Klook. Discover and book activities and attractions, then earn cashback on eligible bookings under the offer terms.',
-  zalora: 'Refresh your wardrobe with ZALORA’s selection of fashion and lifestyle brands. Earn cashback on eligible purchases; exclusions and offer terms apply.',
-  lazada: 'Explore Lazada’s online marketplace for everyday essentials, new discoveries and more. Earn cashback on eligible orders; product exclusions and offer terms apply.',
-  shopee: 'Find everyday favourites and new discoveries across Shopee’s online marketplace. Earn cashback on eligible orders; product exclusions and offer terms apply.',
-  adidas: 'Explore adidas sportswear, footwear and accessories designed for sport and everyday wear. Earn cashback on eligible purchases; exclusions and offer terms apply.',
-  uniqlo: 'Discover UNIQLO LifeWear: thoughtfully designed clothing made for comfort, quality and everyday versatility. Earn cashback on eligible purchases; exclusions and offer terms apply.',
 }
 
 const transactions: Transaction[] = [
@@ -116,13 +81,13 @@ const formatRate = (rate: number) => Number(rate.toFixed(2)).toString()
 const formatRM = (amount: number) => `RM ${amount.toFixed(2)}`
 
 function BrandLogo({ merchant, compact = false }: { merchant: Merchant; compact?: boolean }) {
-  const mark = merchant.logo === 'tripdotcom' ? 'T' : merchant.logo === 'adidas' ? 'A' : merchant.name.slice(0, 1).toUpperCase()
-  const wordmark = merchant.logo === 'zalora' ? 'ZALORA' : merchant.name
+  const [logoFailed, setLogoFailed] = useState(false)
+  const showWordmark = !merchant.logoPath || logoFailed || !merchant.logoIncludesWordmark
 
   return (
-    <div className={`brand-logo brand-logo-${merchant.logo} ${compact ? 'brand-logo-compact' : ''}`} role="img" aria-label={`${merchant.name} logo`}>
-      <span className={`brand-logo-mark brand-logo-mark-${merchant.logo}`} aria-hidden="true">{mark}</span>
-      <span className="brand-wordmark">{wordmark}</span>
+    <div className={`brand-logo brand-logo-${merchant.id} ${compact ? 'brand-logo-compact' : ''}`}>
+      {merchant.logoPath && !logoFailed && <img src={merchant.logoPath} alt="" aria-hidden="true" onError={() => setLogoFailed(true)} />}
+      {showWordmark && <span className="brand-wordmark">{merchant.name}</span>}
     </div>
   )
 }
@@ -254,7 +219,7 @@ function CashbackPrototype() {
     <main
       className="prototype-stage"
       data-theme={branding.baseThemeId}
-      style={{ '--theme-primary': branding.primary, '--theme-secondary': branding.secondary, '--theme-navy': palette.navy, '--theme-soft': palette.soft } as React.CSSProperties}
+      style={{ '--theme-primary': branding.primary, '--theme-secondary': branding.secondary, '--theme-navy': palette.navy, '--theme-soft': palette.soft, '--theme-background': palette.background, '--theme-strong': branding.themeId === 'custom' ? `color-mix(in srgb, ${branding.primary} 76%, ${palette.navy})` : palette.strong } as React.CSSProperties}
     >
       <DemoSettings
         settings={branding}
@@ -267,7 +232,7 @@ function CashbackPrototype() {
         <div className="device-camera" aria-hidden="true" />
         <PhoneStatusBar dark={false} />
         <div key={screen} className="screen-viewport screen-light">
-          {screen === 'home' && <HomeScreen branding={branding} onOpenDeals={() => navigate('deals')} onToast={toast} />}
+          {screen === 'home' && <HomeScreen branding={branding} customerName={DEMO_CUSTOMERS[branding.customerId].name} onOpenDeals={() => navigate('deals')} onToast={toast} />}
           {screen === 'deals' && <DealsScreen cashbackName={branding.cashbackName} category={category} setCategory={setCategory} search={search} setSearch={setSearch} sort={sort} setSort={setSort} visibleMerchants={filteredMerchants} onBack={goBack} onSelect={openMerchant} onOpenLedger={() => navigate('ledger')} />}
           {screen === 'merchant' && <MerchantScreen cashbackName={branding.cashbackName} merchant={selectedMerchant} onBack={goBack} onTerms={() => navigate('terms')} />}
           {screen === 'ledger' && <LedgerScreen cashbackName={branding.cashbackName} filter={transactionFilter} setFilter={setTransactionFilter} onBack={goBack} onBrowse={() => navigate('deals')} onSelectTransaction={openTransaction} />}
@@ -280,7 +245,19 @@ function CashbackPrototype() {
   )
 }
 
-function HomeScreen({ branding, onOpenDeals, onToast }: { branding: BrandSettings; onOpenDeals: () => void; onToast: () => void }) {
+function HomeScreen({ branding, customerName, onOpenDeals, onToast }: { branding: BrandSettings; customerName: string; onOpenDeals: () => void; onToast: () => void }) {
+  const [greeting, setGreeting] = useState('Good morning')
+
+  useEffect(() => {
+    const updateGreeting = () => {
+      const hour = new Date().getHours()
+      setGreeting(hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening')
+    }
+    updateGreeting()
+    const interval = window.setInterval(updateGreeting, 60_000)
+    return () => window.clearInterval(interval)
+  }, [])
+
   const quickActions = [
     { label: 'Scan', icon: QrCode }, { label: 'Pay', icon: CreditCard }, { label: 'Transfer', icon: ArrowLeftRight }, { label: 'Bills', icon: ReceiptText },
     { label: 'Top Up', icon: ArrowDownUp }, { label: 'Parking', icon: Clock3 }, { label: 'Insurance', icon: ShieldCheck },
@@ -295,15 +272,20 @@ function HomeScreen({ branding, onOpenDeals, onToast }: { branding: BrandSetting
         </div>
         <div className="home-profile-actions">
           <button className="notification-button" aria-label="3 sample notifications" onClick={onToast}><Bell size={23} /><span>3</span></button>
-          <button className="profile-button" aria-label="Profile" onClick={onToast}><UserRound size={26} /></button>
+          <button className="profile-button" aria-label={`Profile for ${customerName}`} onClick={onToast}><UserRound size={26} /></button>
         </div>
       </div>
-      <div className="home-greeting-copy"><p className="eyebrow-muted">Good morning,</p><button className="user-greeting" onClick={onToast}>Alex <ChevronRight size={20} /></button></div>
+      <div className="home-greeting-copy"><p className="eyebrow-muted">{greeting},</p><p className="user-greeting">{customerName}!</p></div>
 
       <section className="balance-banner" aria-label="Demo wallet balance RM 568.00">
         <div><span className="balance-label">Demo wallet balance</span><strong>RM 568.00 <Eye size={19} /></strong></div>
         <button className="button-primary balance-add" onClick={onToast}><span>+</span> Add money</button>
       </section>
+
+      <button className="home-campaign" onClick={onOpenDeals} aria-label={`Explore ${branding.cashbackName} deals`}>
+        <div className="campaign-copy"><span className="campaign-kicker">{branding.cashbackName} · PARTNER OFFERS</span><strong>Shop online.<br />Get more back.</strong><p>Discover offers from favourite brands and earn on eligible purchases.</p><span className="campaign-button">Explore deals <ChevronRight size={16} /></span></div>
+        <div className="campaign-photo" role="img" aria-label="Suitcase, sun hat and sunglasses ready for a trip"><Image src="/images/cashback-travel.png" alt="" fill sizes="(max-width: 480px) 58vw, 240px" priority /></div>
+      </button>
 
       <section className="quick-grid" aria-label="Wallet services">
         {quickActions.map(({ label, icon: Icon }) => <button className="quick-action" key={label} onClick={onToast}><span><Icon size={22} /></span><small>{label}</small></button>)}
@@ -312,14 +294,9 @@ function HomeScreen({ branding, onOpenDeals, onToast }: { branding: BrandSetting
         </button>
       </section>
 
-      <button className="home-campaign" onClick={onOpenDeals} aria-label={`Explore ${branding.cashbackName} deals`}>
-        <div className="campaign-copy"><span className="campaign-kicker">{branding.cashbackName} · PARTNER OFFERS</span><strong>Shop online.<br />Get more back.</strong><p>Discover offers from favourite brands and earn on eligible purchases.</p><span className="campaign-button">Explore deals <ChevronRight size={16} /></span></div>
-        <div className="campaign-photo" role="img" aria-label="Suitcase, sun hat and sunglasses ready for a trip" />
-      </button>
-
       <div className="section-heading home-featured-heading"><h2>Featured merchants</h2><button onClick={onOpenDeals}>See all <ChevronRight size={16} /></button></div>
       <div className="featured-scroll">
-        {featured.map((merchant) => <button key={merchant.name} className="featured-card" onClick={() => onOpenDeals}><div className="featured-scene" /><BrandLogo merchant={merchant} /><strong>Up to {formatRate(merchantCashbackRate(merchant))}%</strong><span>{branding.cashbackName}</span></button>)}
+        {featured.map((merchant) => <button key={merchant.name} className="featured-card" aria-label={`${merchant.name}, up to ${formatRate(merchantCashbackRate(merchant))}% ${branding.cashbackName}`} onClick={onOpenDeals}><span className="featured-scene" aria-hidden="true"><Image src={merchant.bannerPath} alt="" fill sizes="120px" /></span><BrandLogo merchant={merchant} /><strong>Up to {formatRate(merchantCashbackRate(merchant))}%</strong><span>{branding.cashbackName}</span></button>)}
       </div>
 
       <nav className="bottom-tabs" aria-label="Primary navigation">
@@ -364,10 +341,14 @@ function MerchantScreen({ cashbackName, merchant, onBack, onTerms }: { cashbackN
   const shopUrl = merchant.affiliateUrl ?? merchant.officialWebsite
   const isBooking = merchant.categories.some((category) => ['Hotels', 'Homes', 'Flights', 'Car Rentals', 'Activities', 'Attractions'].includes(category))
   const purchase = isBooking ? 'booking' : 'purchase'
-  const about = merchantAbout[merchant.id].replace(/cashback/gi, cashbackName)
+  const about = merchant.about.replace(/cashback/gi, cashbackName)
   return (
     <div className="screen-content trip-content">
       <ScreenHeader title={merchant.name} onBack={onBack} />
+      <figure className="merchant-banner">
+        <Image src={merchant.bannerPath} alt={merchant.bannerAlt} fill sizes="(max-width: 480px) 100vw, 384px" />
+        <figcaption>Illustrative category photography · not an official merchant campaign</figcaption>
+      </figure>
       <section className="merchant-profile">
         <div className="merchant-profile-logo"><BrandLogo merchant={merchant} /></div>
         <div className="trip-headline"><h2><em>Up to {formatRate(merchantCashbackRate(merchant))}%</em> {cashbackName}</h2><p>{merchant.description}</p></div>

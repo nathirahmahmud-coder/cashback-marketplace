@@ -2,15 +2,15 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Perks | Digital Wallet & Cashback',
-  description: 'A vibrant digital wallet and cashback marketplace demo for partner presentations.',
-  applicationName: 'Perks Wallet Demo',
+  title: 'Cashback Marketplace | Partner Demo',
+  description: 'A white-label cashback shopping marketplace prototype for digital wallet and fintech partner presentations.',
+  applicationName: 'White-Label Cashback Marketplace',
   icons: { icon: '/icon.svg' },
 }
 
 export const viewport: Viewport = {
   colorScheme: 'light',
-  themeColor: '#3457E8',
+  themeColor: '#FAF8F7',
 }
 
 export default function RootLayout({
