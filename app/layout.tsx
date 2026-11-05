@@ -1,34 +1,16 @@
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Cashback Deals',
-  description: 'Explore cashback offers, track purchases and review merchant terms in your e-wallet.',
-  applicationName: 'Cashback Deals',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
+  title: 'Perks | Digital Wallet & Cashback',
+  description: 'A vibrant digital wallet and cashback marketplace demo for partner presentations.',
+  applicationName: 'Perks Wallet Demo',
+  icons: { icon: '/icon.svg' },
 }
 
 export const viewport: Viewport = {
   colorScheme: 'light',
-  themeColor: '#ffffff',
+  themeColor: '#3457E8',
 }
 
 export default function RootLayout({
@@ -38,10 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-MY">
-      <body className="antialiased">
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   )
 }
